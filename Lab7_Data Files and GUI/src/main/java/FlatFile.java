@@ -60,28 +60,31 @@ public class FlatFile {
 
         try{
             FileWriter fw = new FileWriter(filePath, false);
-            BufferedWriter bw = new BufferedWriter(fw);
-            PrintWriter pw = new PrintWriter(bw);
-            StringBuilder stringBuilder = new StringBuilder();
+            if (dataArray != null){
 
-            for(String line: dataArray) {
-                // write only the first three fields
-                String[] values = line.split(",");
+                BufferedWriter bw = new BufferedWriter(fw);
+                PrintWriter pw = new PrintWriter(bw);
+                StringBuilder stringBuilder = new StringBuilder();
 
-                // clear stringBuilder
-                stringBuilder.setLength(0);
-                for(int j = 0; j < 3; j++) {
-                    stringBuilder.append(values[j]);
-                    if( j != 2) { // the last one value doesn't need a comma
-                        stringBuilder.append(",");
+                for(String line: dataArray) {
+                    // write only the first three fields
+                    String[] values = line.split(",");
+
+                    // clear stringBuilder
+                    stringBuilder.setLength(0);
+                    for(int j = 0; j < 3; j++) {
+                        stringBuilder.append(values[j]);
+                        if( j != 2) { // the last one value doesn't need a comma
+                            stringBuilder.append(",");
+                        }
                     }
-                }
 
-                // write line by line into output csv file
-                pw.println(stringBuilder);
+                    // write line by line into output csv file
+                    pw.println(stringBuilder);
+                }
+                pw.flush();
+                pw.close();
             }
-            pw.flush();
-            pw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

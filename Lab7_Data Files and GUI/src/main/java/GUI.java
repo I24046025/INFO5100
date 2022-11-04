@@ -29,6 +29,9 @@ public class GUI extends JFrame implements ActionListener {
     // button of read and write from file
     private JButton btnRead, btnWrite;
 
+    // read the file and save the contents in data variable
+    private List<String> data = null;
+
     public GUI(String readFileName){
         this.readFileName = readFileName;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,12 +107,12 @@ public class GUI extends JFrame implements ActionListener {
 
         // read the csv file
         String readFileName = flatFile.getReadFileName();
-        List<String> data = flatFile.readFile(readFileName);
 
         StringBuilder stringBuilder = new StringBuilder();
 
         // if read file button is triggered, else write file button is triggered...
         if (e.getSource() == btnRead){
+            data = flatFile.readFile(readFileName);
 
             // print the first five rows and headers of reading file
             int i = 0;
@@ -125,21 +128,24 @@ public class GUI extends JFrame implements ActionListener {
             flatFile.setOutputFileName(writeFileName.getText());
             flatFile.writeFile(flatFile.getOutputFileName(), data);
 
-            // print the first five rows and headers of writing file
-            for (int row = 0; row < 6; row++) {
-                // write only the first three fields
-                String[] values = data.get(row).split(",");
+            if (data != null){
 
-                // clear stringBuilder
-                for(int j = 0; j < 3; j++) {
-                    stringBuilder.append(values[j]);
-                    if( j != 2) { // the last one value doesn't need a comma
-                        stringBuilder.append(",");
+                // print the first five rows and headers of writing file
+                for (int row = 0; row < 6; row++) {
+                    // write only the first three fields
+                    String[] values = data.get(row).split(",");
+
+                    // clear stringBuilder
+                    for(int j = 0; j < 3; j++) {
+                        stringBuilder.append(values[j]);
+                        if( j != 2) { // the last one value doesn't need a comma
+                            stringBuilder.append(",");
+                        }
                     }
+                    stringBuilder.append("\n");
                 }
-                stringBuilder.append("\n");
+                writeArea.setText(String.valueOf(stringBuilder));
             }
-            writeArea.setText(String.valueOf(stringBuilder));
         }
 
         // clear stringBuilder
