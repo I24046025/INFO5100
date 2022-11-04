@@ -24,7 +24,7 @@ public class GUI extends JFrame implements ActionListener {
     private JLabel labelReadFile, labelReadFileName;
 
     // label of writing file name
-    private JLabel labelWriteFile, labelWriteFileName;
+    private JLabel labelWriteFile;
 
     // button of read and write from file
     private JButton btnRead, btnWrite;
