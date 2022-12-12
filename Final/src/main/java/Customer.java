@@ -100,16 +100,21 @@ public class Customer extends JFrame {
                             fw.write("Name,Id,Email,Phone,Gender" + System.getProperty("line.separator"));
                             fw.close();
                         }
-                        // file already exists
-                        FileWriter fw = new FileWriter("customerList.txt", true);
-                        BufferedWriter bw = new BufferedWriter(fw);
-                        PrintWriter pw = new PrintWriter(bw);
-                        StringBuilder sb = new StringBuilder();
+                        if (name.getText().isEmpty() || id.getText().isEmpty() || email.getText().isEmpty() || contact.getText().isEmpty() || gender.getText().isEmpty()){
+                            JOptionPane.showMessageDialog(null, "Please fill out all the text fields.");
+                        }else{
+                            // file already exists
+                            FileWriter fw = new FileWriter("customerList.txt", true);
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            PrintWriter pw = new PrintWriter(bw);
+                            StringBuilder sb = new StringBuilder();
 
-                        sb.append(name.getText() + "," + id.getText() + "," + email.getText() + "," + contact.getText() + "," + gender.getText());
-                        pw.println(sb);
-                        pw.flush();
-                        pw.close();
+                            sb.append(name.getText() + "," + id.getText() + "," + email.getText() + "," + contact.getText() + "," + gender.getText());
+                            pw.println(sb);
+                            pw.flush();
+                            pw.close();
+                            JOptionPane.showMessageDialog(null, "Added successfully!");
+                        }
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
