@@ -4,7 +4,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -61,15 +63,45 @@ public class ViewCustomer extends JFrame {
             // get line from txt file
             Object[] tableLines = br.lines().toArray();
 
-            // extract ata from lines, set data to jTable model
+            // extract data from lines, set data to jTable model
             for (int i = 0; i < tableLines.length ; i++) {
                 String line = tableLines[i].toString().trim();
                 String[] dataRow = line.split(",");
                 model.addRow(dataRow);
             }
+            br.close();
 
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (FileNotFoundException ex) {
+            FileWriter fw;
+            try {
+                fw = new FileWriter("customerList.txt", true);
+                fw.write("Name,Id,Email,Phone,Gender" + System.getProperty("line.separator"));
+                fw.close();
+
+                FileReader fr = new FileReader("customerList.txt");
+                BufferedReader br = new BufferedReader(fr);
+
+                // get the first line aka the columns name from the file, set columns name to the jTable Model
+                String firstLine = br.readLine().trim();
+                String[] columnsName = firstLine.split(",");
+
+                model.setColumnIdentifiers(columnsName);
+
+                // get line from txt file
+                Object[] tableLines = br.lines().toArray();
+
+                // extract data from lines, set data to jTable model
+                for (int i = 0; i < tableLines.length ; i++) {
+                    String line = tableLines[i].toString().trim();
+                    String[] dataRow = line.split(",");
+                    model.addRow(dataRow);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         JButton btnNewButton = new JButton("Back to Menu");
@@ -86,4 +118,3 @@ public class ViewCustomer extends JFrame {
         getContentPane().add(btnNewButton);
     }
 }
-
